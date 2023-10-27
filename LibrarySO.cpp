@@ -12,10 +12,50 @@ typedef std::map<int, st> dict;
 //fstream agr é fs
     typedef std::fstream fs;
 
+class File{
+    
+    public:
+    fs mainFile;
+
+    File(){
+    }
+
+    //Abre o arquivo, escreve a chave e o valor no dicionário e fecha
+    void WriteInFile(dict di){
+        mainFile.open("MainFile.txt", std::ios::out);
+        for(auto pair :  di){
+            mainFile << pair.first << " - " << pair.second << '\n';
+        }
+        mainFile.close();
+    }
+    //Deleta todas as informações do arquivo
+    void EraseInFile(){
+        mainFile.open("MainFile.txt", std::ios::out);
+        mainFile.clear();
+        mainFile.close();
+    }
+};
+
+class Show{
+    public:
+
+    Show(){
+    }
+
+    void DisplayDic(dict di){
+        for(auto pair : di){
+            std::cout << pair.first << " - " << pair.second << '\n';
+        }
+    }
+};
+
 class MainDictionary{
     public:
     dict di;
     File write;
+
+    MainDictionary(){
+    }
 
     //Comandos. Nn sei se fiz certo o args[], mas tá aí
     int Main(int argc, char** argv){
@@ -53,7 +93,7 @@ class MainDictionary{
         auto i = di.begin();
         for(; i != di.end();){
             //Não faço IDEIA do pq isso nn funciona @_@ / Vou me matar 💀💀💀
-            if(i == key){
+            if(i->first == key){
                 i = di.erase(i);
                 write.EraseInFile();
                 write.WriteInFile(di);
@@ -83,42 +123,11 @@ class MainDictionary{
         auto i = di.begin();
         for(;i != di.end();){
             //Aqui denovo, msm erro ;-; eu to lgd q é pq eu to usano ponteiro com int (?) mas eu nn sei como arrumar.
-            if(i -> second == key){
+            if(i -> first == key){
                 return true;
             }
             i++;
         }
         return false;
-    }
-};
-
-class File{
-    
-    public:
-    fs mainFile;
-
-    //Abre o arquivo, escreve a chave e o valor no dicionário e fecha
-    void WriteInFile(dict di){
-        mainFile.open("MainFile.txt", std::ios::out);
-        for(auto pair :  di){
-            mainFile << pair.first << " - " << pair.second << '\n';
-        }
-        mainFile.close();
-    }
-    //Deleta todas as informações do arquivo
-    void EraseInFile(){
-        mainFile.open("MainFile.txt", std::ios::out);
-        mainFile.clear();
-        mainFile.close();
-    }
-};
-
-class Show{
-    public:
-
-    void DisplayDic(dict di){
-        for(auto pair : di){
-            std::cout << pair.first << " - " << pair.second << '\n';
-        }
     }
 };
